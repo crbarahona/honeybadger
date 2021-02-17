@@ -1,5 +1,6 @@
 from honeybadger.utils import freq2channel
 import os
+import re
 
 class AP(object):
 
@@ -30,8 +31,12 @@ def parse_airport(content):
     aps = []
     lines = [l.strip() for l in content.strip().split(os.linesep)]
     for line in lines[1:]:
-        words = line.split()
-        aps.append(AP(ssid=words[0], bssid=words[1], ss=int(words[2]), channel=int(words[3])))
+        sections = re.split('[a-fA-F0-9]{2}:[a-fA-F0-9]{2}:[a-fA-F0-9]{2}:[a-fA-F0-9]{2}:[a-fA-F0-9]{2}:[a-fA-F0-9]{2}', line)
+        ssid = sections[0].rstrip()
+        bssid = re.findall('[a-fA-F0-9]{2}:[a-fA-F0-9]{2}:[a-fA-F0-9]{2}:[a-fA-F0-9]{2}:[a-fA-F0-9]{2}:[a-fA-F0-9]{2}', line)[0];
+        words = sections[1].split()
+        channel = words[1].split(",")
+        aps.append(AP(ssid=ssid, bssid=bssid, ss=int(words[0]), channel=int(channel[0])))
     return aps
 
 def parse_netsh(content):
