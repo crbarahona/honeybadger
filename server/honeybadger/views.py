@@ -273,6 +273,8 @@ def api_beacon(target, agent):
     # extract universal parameters
     comment = b64d(request.values.get('comment', '')).decode() or None
     ip = request.environ['REMOTE_ADDR']
+    if(request.headers.get('X-Real-IP')):
+        ip = request.headers.get('X-Real-IP')
     port = request.environ['REMOTE_PORT']
     useragent = request.environ['HTTP_USER_AGENT']
     logger.info('Connection from {} @ {}:{} via {}'.format(target, ip, port, agent))
