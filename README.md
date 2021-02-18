@@ -16,7 +16,7 @@ An early prototype of HoneyBadger (v1) can be seen in the presentation "[Hide an
 2. Clone the HoneyBadger repository.
 
     ```
-    $ git clone https://github.com/adhdproject/honeybadger.git
+    $ git clone https://github.com/crbarahona/honeybadger.git
     ```
 
 3. Install the dependencies.
