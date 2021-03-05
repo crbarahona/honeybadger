@@ -31,12 +31,25 @@ def index():
 def map():
     return render_template('map.html', key=app.config['GOOGLE_API_KEY'])
 
+@app.route('/map_beta')
+@login_required
+def map_beta():
+    return render_template('map_beta.html')
+
 @app.route('/beacons')
 @login_required
 def beacons():
     beacons = [b.serialized for t in Target.query.all() for b in t.beacons.all()]
     columns = ['id', 'target', 'agent', 'lat', 'lng', 'acc', 'ip', 'created']
     return render_template('beacons.html', columns=columns, beacons=beacons)
+
+@app.route('/beacons.csv')
+@login_required
+def beacons_csv():
+    import csv
+    beacons = [b.serialized for t in Target.query.all() for b in t.beacons.all()]
+    columns = ['id','created','ip','lat','lng', 'comment']
+    return render_template('beacons.csv', columns=columns, beacons=beacons)
 
 @app.route('/beacon/delete/<int:id>')
 @login_required
